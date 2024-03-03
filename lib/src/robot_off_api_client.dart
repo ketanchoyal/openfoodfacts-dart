@@ -4,12 +4,14 @@ import 'package:http/http.dart';
 
 import 'model/insight.dart';
 import 'model/robotoff_question.dart';
+import 'model/robotoff_question_order.dart';
 import 'model/status.dart';
 import 'model/user.dart';
 import 'utils/country_helper.dart';
 import 'utils/http_helper.dart';
 import 'utils/language_helper.dart';
-import 'utils/query_type.dart';
+import 'utils/open_food_api_configuration.dart';
+import 'utils/server_type.dart';
 import 'utils/uri_helper.dart';
 
 class RobotoffAPIClient {
@@ -17,35 +19,29 @@ class RobotoffAPIClient {
 
   static Future<InsightsResult> getRandomInsights({
     InsightType? type,
-    OpenFoodFactsCountry? country,
+    Iterable<OpenFoodFactsCountry>? countries,
     String? valueTag,
-    String? serverDomain,
-    QueryType? queryType,
+    ServerType? serverType,
+    int? count,
+    final UriHelper uriHelper = uriHelperRobotoffProd,
   }) async {
-    final Map<String, String> parameters = {};
+    final Map<String, String> parameters = {
+      if (type != null) 'type': type.offTag,
+      if (countries?.isNotEmpty == true)
+        'countries': _getCountryList(countries!),
+      if (valueTag != null) 'value_tag': valueTag,
+      if (count != null) 'count': count.toString(),
+      if (serverType != null) 'server_type': serverType.offTag,
+    };
 
-    if (type != null && type.value != null) {
-      parameters['type'] = type.value!;
-    }
-    if (country != null) {
-      parameters['country'] = country.offTag;
-    }
-    if (valueTag != null) {
-      parameters['value_tag'] = valueTag;
-    }
-    if (serverDomain != null) {
-      parameters['server_domain'] = serverDomain;
-    }
-
-    var insightUri = UriHelper.getRobotoffUri(
+    var insightUri = uriHelper.getUri(
       path: 'api/v1/insights/random/',
-      queryType: queryType,
       queryParameters: parameters,
     );
 
     Response response = await HttpHelper().doGetRequest(
       insightUri,
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     var result = InsightsResult.fromJson(
       HttpHelper().jsonDecode(utf8.decode(response.bodyBytes)),
@@ -56,16 +52,21 @@ class RobotoffAPIClient {
 
   static Future<InsightsResult> getProductInsights(
     String barcode, {
-    QueryType? queryType,
+    ServerType? serverType,
+    final UriHelper uriHelper = uriHelperRobotoffProd,
   }) async {
-    var insightsUri = UriHelper.getRobotoffUri(
+    final Map<String, String> parameters = <String, String>{
+      if (serverType != null) 'server_type': serverType.offTag,
+    };
+
+    var insightsUri = uriHelper.getUri(
       path: 'api/v1/insights/$barcode',
-      queryType: queryType,
+      queryParameters: parameters,
     );
 
     Response response = await HttpHelper().doGetRequest(
       insightsUri,
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
 
     return InsightsResult.fromJson(
@@ -78,27 +79,28 @@ class RobotoffAPIClient {
     OpenFoodFactsLanguage language, {
     User? user,
     int? count,
-    QueryType? queryType,
+    ServerType? serverType,
+    final UriHelper uriHelper = uriHelperRobotoffProd,
+    List<InsightType>? insightTypes,
   }) async {
-    if (count == null || count <= 0) {
-      count = 1;
-    }
-
     final Map<String, String> parameters = <String, String>{
       'lang': language.code,
-      'count': count.toString()
+      if (count != null) 'count': count.toString(),
+      if (serverType != null) 'server_type': serverType.offTag,
+      if (insightTypes != null)
+        'insight_types':
+            insightTypes.map((InsightType type) => type.offTag).join(','),
     };
 
-    var robotoffQuestionUri = UriHelper.getRobotoffUri(
+    var robotoffQuestionUri = uriHelper.getUri(
       path: 'api/v1/questions/$barcode',
       queryParameters: parameters,
-      queryType: queryType,
     );
 
     Response response = await HttpHelper().doGetRequest(
       robotoffQuestionUri,
       user: user,
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     var result = RobotoffQuestionResult.fromJson(
       HttpHelper().jsonDecode(utf8.decode(response.bodyBytes)),
@@ -107,49 +109,53 @@ class RobotoffAPIClient {
     return result;
   }
 
-  static Future<RobotoffQuestionResult> getRandomQuestions(
-    OpenFoodFactsLanguage language,
-    User? user, {
+  /// cf. https://openfoodfacts.github.io/robotoff/references/api/#tag/Questions/paths/~1questions/get
+  static Future<RobotoffQuestionResult> getQuestions(
+    OpenFoodFactsLanguage language, {
+    User? user,
     int? count,
-    List<InsightType>? types,
-    QueryType? queryType,
+    int? page,
+    List<InsightType>? insightTypes,
+    Iterable<OpenFoodFactsCountry>? countries,
+    List<String>? brands,
+    RobotoffQuestionOrder? questionOrder,
+    ServerType? serverType,
+    String? valueTag,
+    final UriHelper uriHelper = uriHelperRobotoffProd,
   }) async {
-    if (count == null || count <= 0) {
-      count = 1;
-    }
-
-    final List<String> typesValues = [];
-    if (types != null) {
-      for (final InsightType t in types) {
-        final String? value = t.value;
-        if (value != null) {
-          typesValues.add(value);
-        }
+    final List<String> insightValues = [];
+    if (insightTypes != null) {
+      for (final InsightType insightType in insightTypes) {
+        insightValues.add(insightType.offTag);
       }
     }
 
     final Map<String, String> parameters = <String, String>{
       'lang': language.code,
-      'count': count.toString(),
-      if (typesValues.isNotEmpty) 'insight_types': typesValues.join(',')
+      if (count != null) 'count': count.toString(),
+      if (page != null) 'page': page.toString(),
+      if (serverType != null) 'server_type': serverType.offTag,
+      if (insightValues.isNotEmpty) 'insight_types': insightValues.join(','),
+      if (brands?.isNotEmpty == true) 'brands': brands!.join(','),
+      if (questionOrder != null) 'order_by': questionOrder.offTag,
+      if (countries?.isNotEmpty == true)
+        'countries': _getCountryList(countries!),
+      if (valueTag != null) 'value_tag': valueTag,
     };
 
-    var robotoffQuestionUri = UriHelper.getRobotoffUri(
-      path: 'api/v1/questions/random',
+    var robotoffQuestionUri = uriHelper.getUri(
+      path: 'api/v1/questions',
       queryParameters: parameters,
-      queryType: queryType,
     );
 
-    Response response = await HttpHelper().doGetRequest(
+    final Response response = await HttpHelper().doGetRequest(
       robotoffQuestionUri,
       user: user,
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
-    var result = RobotoffQuestionResult.fromJson(
+    return RobotoffQuestionResult.fromJson(
       HttpHelper().jsonDecode(utf8.decode(response.bodyBytes)),
     );
-
-    return result;
   }
 
   static Future<Status> postInsightAnnotation(
@@ -157,11 +163,10 @@ class RobotoffAPIClient {
     InsightAnnotation annotation, {
     String? deviceId,
     bool update = true,
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperRobotoffProd,
   }) async {
-    var insightUri = UriHelper.getRobotoffUri(
+    var insightUri = uriHelper.getUri(
       path: 'api/v1/insights/annotate',
-      queryType: queryType,
     );
 
     final Map<String, String> annotationData = {
@@ -180,10 +185,21 @@ class RobotoffAPIClient {
       insightUri,
       annotationData,
       null,
-      queryType: queryType,
+      uriHelper: uriHelper,
       addCredentialsToBody: false,
       addCredentialsToHeader: true,
     );
     return Status.fromApiResponse(response.body);
+  }
+
+  /// Returns a list of country as comma-separated 2-letter codes
+  static String _getCountryList(
+    final Iterable<OpenFoodFactsCountry> countries,
+  ) {
+    final List<String> result = <String>[];
+    for (final OpenFoodFactsCountry country in countries) {
+      result.add(country.offTag);
+    }
+    return result.join(',');
   }
 }

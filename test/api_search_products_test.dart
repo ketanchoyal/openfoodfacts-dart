@@ -7,7 +7,6 @@ import 'test_constants.dart';
 
 void main() {
   OpenFoodAPIConfiguration.userAgent = TestConstants.TEST_USER_AGENT;
-  OpenFoodAPIConfiguration.globalQueryType = QueryType.PROD;
   OpenFoodAPIConfiguration.globalUser = TestConstants.PROD_USER;
   const ProductQueryVersion version = ProductQueryVersion.v3;
 
@@ -632,7 +631,6 @@ void main() {
       final SearchResult result = await OpenFoodAPIClient.searchProducts(
         TestConstants.PROD_USER,
         configuration,
-        queryType: QueryType.PROD,
       );
 
       expect(result.products, isNotNull);
@@ -654,7 +652,7 @@ void main() {
       await OpenFoodAPIClient.saveProduct(
         TestConstants.TEST_USER,
         product,
-        queryType: QueryType.TEST,
+        uriHelper: uriHelperFoodTest,
       );
 
       final parameters = <Parameter>[
@@ -673,7 +671,7 @@ void main() {
       final SearchResult result = await OpenFoodAPIClient.searchProducts(
         TestConstants.TEST_USER,
         configuration,
-        queryType: QueryType.TEST,
+        uriHelper: uriHelperFoodTest,
       );
 
       expect(result.products!.length, 1);
@@ -787,7 +785,7 @@ void main() {
       expect(result.products!.length, 24);
       expect(result.products![0].runtimeType, Product);
       expect(result.count, greaterThan(1500));
-    });
+    }, skip: 'Temporarily not working (server issue)');
 
     test('many many products', () async {
       final List<String> manyBarcodes = <String>[];
@@ -818,14 +816,15 @@ void main() {
     });
 
     test('nova filter', () async {
-      // Approximated min counts for POLAND
+      const int pageSize = 24;
+      // Approximated min counts for FRANCE / Carrefour
       // There were too many results for FRANCE, and that made the server crash.
-      // There are far less results for POLAND, which is OK for these tests.
+      // That's why we add a filter on STORES.
       const Map<int, int> novaMinCounts = <int, int>{
-        1: 400, // was 541 on 2022-12-31
-        2: 100, // was 126 on 2022-12-31
-        3: 750, // was 1015 on 2022-12-31
-        4: 2500, // was 3064 on 2022-12-31
+        1: 1500, // was 1777 on 2023-08-12
+        2: 300, // was 352 on 2023-08-12
+        3: 3000, // was 3654 on 2023-08-12
+        4: 7000, // was 8558 on 2023-08-12
       };
 
       // single filters
@@ -838,23 +837,28 @@ void main() {
                 tagFilterType: TagFilterType.NOVA_GROUPS,
                 tagName: '$novaGroup',
               ),
+              TagFilter.fromType(
+                tagFilterType: TagFilterType.STORES,
+                tagName: 'Carrefour',
+              ),
+              PageSize(size: pageSize),
             ],
             fields: [ProductField.BARCODE, ProductField.NOVA_GROUP],
             language: OpenFoodFactsLanguage.FRENCH,
-            country: OpenFoodFactsCountry.POLAND,
+            country: OpenFoodFactsCountry.FRANCE,
             version: ProductQueryVersion.v3,
           ),
         );
 
         expect(result.page, 1);
-        expect(result.pageSize, 24);
+        expect(result.pageSize, pageSize);
         expect(
           result.count,
           greaterThanOrEqualTo(novaMinCounts[novaGroup]!),
           reason: 'Not enough values for nova group $novaGroup',
         );
         expect(result.products, isNotNull);
-        expect(result.products!.length, 24);
+        expect(result.products!.length, pageSize);
         for (final Product product in result.products!) {
           expect(product.novaGroup, novaGroup);
         }

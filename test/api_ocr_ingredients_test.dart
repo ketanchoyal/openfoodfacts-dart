@@ -5,7 +5,6 @@ import 'test_constants.dart';
 
 void main() {
   OpenFoodAPIConfiguration.userAgent = TestConstants.TEST_USER_AGENT;
-  OpenFoodAPIConfiguration.globalQueryType = QueryType.PROD;
 
   Future<void> doTest(
     final String barcode,
@@ -29,53 +28,61 @@ void main() {
   const String germanBarcode = '4260107223344';
 
   group('$OpenFoodAPIClient Extract Ingredients from images', () {
-    test('Extract Ingredients using Google Vision Cloud (French)', () async {
-      doTest(
+    test(
+      'Extract Ingredients using Google Vision Cloud (French)',
+      () async => doTest(
         frenchBarcode,
         OpenFoodFactsLanguage.FRENCH,
         OcrField.GOOGLE_CLOUD_VISION,
-      );
-    });
+      ),
+    );
 
-    test('Extract Ingredients using Google Vision Cloud (English)', () async {
-      doTest(
+    test(
+      'Extract Ingredients using Google Vision Cloud (English)',
+      () async => doTest(
         englishBarcode,
         OpenFoodFactsLanguage.ENGLISH,
         OcrField.GOOGLE_CLOUD_VISION,
-      );
-    });
+      ),
+    );
 
-    test('Extract Ingredients using Google Vision Cloud (German)', () async {
-      doTest(
+    test(
+      'Extract Ingredients using Google Vision Cloud (German)',
+      () async => doTest(
         germanBarcode,
         OpenFoodFactsLanguage.GERMAN,
         OcrField.GOOGLE_CLOUD_VISION,
-      );
-    });
+      ),
+    );
 
-    test('Extract Ingredients using Tesseract (French)', () async {
-      doTest(
+    test(
+      'Extract Ingredients using Tesseract (French)',
+      () async => doTest(
         frenchBarcode,
         OpenFoodFactsLanguage.FRENCH,
         OcrField.TESSERACT,
-      );
-    });
+      ),
+      skip: 'Server error',
+    );
 
-    test('Extract Ingredients using Tesseract (English)', () async {
-      doTest(
+    test(
+      'Extract Ingredients using Tesseract (English)',
+      () async => doTest(
         englishBarcode,
         OpenFoodFactsLanguage.ENGLISH,
         OcrField.TESSERACT,
-      );
-    });
+      ),
+    );
 
-    test('Extract Ingredients using Tesseract (German)', () async {
-      doTest(
+    test(
+      'Extract Ingredients using Tesseract (German)',
+      () async => doTest(
         germanBarcode,
         OpenFoodFactsLanguage.GERMAN,
         OcrField.TESSERACT,
-      );
-    });
+      ),
+      skip: 'Server error',
+    );
 
     test('Add ingredients image to OFF server and then extract the text',
         () async {

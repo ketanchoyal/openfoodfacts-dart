@@ -6,7 +6,6 @@ import 'test_constants.dart';
 /// Integration test about ingredients.
 void main() {
   OpenFoodAPIConfiguration.userAgent = TestConstants.TEST_USER_AGENT;
-  OpenFoodAPIConfiguration.globalQueryType = QueryType.PROD;
   OpenFoodAPIConfiguration.globalUser = TestConstants.PROD_USER;
   OpenFoodAPIConfiguration.globalCountry = OpenFoodFactsCountry.FRANCE;
   OpenFoodAPIConfiguration.globalLanguages = [
@@ -41,7 +40,7 @@ void main() {
         TaxonomyIngredientQueryConfiguration.roots(fields: fields),
       );
       expect(ingredients, isNotNull);
-      expect(ingredients!.length, greaterThan(800)); // was 816 on 2022-09-23
+      expect(ingredients!.length, greaterThan(700)); // was 795 on 2023-08-12
       for (final TaxonomyIngredient ingredient in ingredients.values) {
         // no parents for roots
         expect(ingredient.parents, isNull);

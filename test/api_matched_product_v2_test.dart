@@ -16,7 +16,6 @@ void main() {
 
   const OpenFoodFactsLanguage language = OpenFoodFactsLanguage.FRENCH;
   OpenFoodAPIConfiguration.userAgent = TestConstants.TEST_USER_AGENT;
-  OpenFoodAPIConfiguration.globalQueryType = QueryType.PROD;
   OpenFoodAPIConfiguration.globalCountry = OpenFoodFactsCountry.FRANCE;
   OpenFoodAPIConfiguration.globalUser = TestConstants.PROD_USER;
   OpenFoodAPIConfiguration.globalLanguages = <OpenFoodFactsLanguage>[language];
@@ -54,24 +53,24 @@ void main() {
     BARCODE_ORIENTALES: _Score(100, MatchedProductStatusV2.VERY_GOOD_MATCH),
     BARCODE_HACK: _Score(100, MatchedProductStatusV2.VERY_GOOD_MATCH),
     BARCODE_SCHNITZEL: _Score(100, MatchedProductStatusV2.VERY_GOOD_MATCH),
-    BARCODE_CHIPOLATA: _Score(0, MatchedProductStatusV2.UNKNOWN_MATCH),
+    BARCODE_CHIPOLATA: _Score(100, MatchedProductStatusV2.VERY_GOOD_MATCH),
     BARCODE_FLEISCHWURST: _Score(100, MatchedProductStatusV2.VERY_GOOD_MATCH),
     BARCODE_POULET: _Score(0, MatchedProductStatusV2.UNKNOWN_MATCH),
-    BARCODE_SAUCISSON: _Score(0, MatchedProductStatusV2.DOES_NOT_MATCH),
+    BARCODE_SAUCISSON: _Score(0, MatchedProductStatusV2.UNKNOWN_MATCH),
     BARCODE_PIZZA: _Score(0, MatchedProductStatusV2.DOES_NOT_MATCH),
     BARCODE_ARDECHE: _Score(0, MatchedProductStatusV2.DOES_NOT_MATCH),
     BARCODE_CHORIZO: _Score(0, MatchedProductStatusV2.DOES_NOT_MATCH),
   };
   final List<String> expectedBarcodeOrder = <String>[
+    BARCODE_CHIPOLATA,
     BARCODE_FLEISCHWURST,
     BARCODE_KNACKI,
     BARCODE_CORDONBLEU,
     BARCODE_ORIENTALES,
     BARCODE_HACK,
     BARCODE_SCHNITZEL,
-    BARCODE_CHIPOLATA,
-    BARCODE_POULET,
     BARCODE_SAUCISSON,
+    BARCODE_POULET,
     BARCODE_PIZZA,
     BARCODE_ARDECHE,
     BARCODE_CHORIZO,

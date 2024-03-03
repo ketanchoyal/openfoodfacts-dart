@@ -2,12 +2,12 @@ import 'package:json_annotation/json_annotation.dart';
 import '../interface/json_object.dart';
 import 'product.dart';
 
-part 'product_result.g.dart';
+part 'old_product_result.g.dart';
 
-// TODO: deprecated from 2022-12-01; remove when old enough
-@Deprecated('Use ProductResultV3 instead')
+/// Product Result (old style).
+// TODO(monsieurtanuki): get rid of it when OBF OPF OPFF support api v3
 @JsonSerializable()
-class ProductResult extends JsonObject {
+class OldProductResult extends JsonObject {
   final int? status;
   @JsonKey(name: 'code')
   final String? barcode;
@@ -15,12 +15,12 @@ class ProductResult extends JsonObject {
   final String? statusVerbose;
   final Product? product;
 
-  const ProductResult(
+  const OldProductResult(
       {this.status, this.barcode, this.statusVerbose, this.product});
 
-  factory ProductResult.fromJson(Map<String, dynamic> json) =>
-      _$ProductResultFromJson(json);
+  factory OldProductResult.fromJson(Map<String, dynamic> json) =>
+      _$OldProductResultFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$ProductResultToJson(this);
+  Map<String, dynamic> toJson() => _$OldProductResultToJson(this);
 }

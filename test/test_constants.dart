@@ -1,7 +1,8 @@
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 class TestConstants {
-  static const UserAgent TEST_USER_AGENT = UserAgent(
+  // ignore: non_constant_identifier_names
+  static final UserAgent TEST_USER_AGENT = UserAgent(
     name: 'off-dart integration tests',
   );
 
@@ -16,4 +17,7 @@ class TestConstants {
     password: 'takeitorleaveit',
     comment: 'dart API test',
   );
+
+  static const String badGatewayError =
+      'Exception: JSON expected, html found: <head><title>502 Bad Gateway</title></head>';
 }

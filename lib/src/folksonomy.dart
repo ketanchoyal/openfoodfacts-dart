@@ -7,7 +7,7 @@ import 'model/product_list.dart';
 import 'model/product_stats.dart';
 import 'model/product_tag.dart';
 import 'utils/http_helper.dart';
-import 'utils/query_type.dart';
+import 'utils/open_food_api_configuration.dart';
 import 'utils/uri_helper.dart';
 
 /// Client calls of the Folksonomy API (Open Food Facts)
@@ -18,14 +18,13 @@ class FolksonomyAPIClient {
 
   /// "hello world"
   static Future<void> hello({
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperFolksonomyProd,
   }) async {
     final Response response = await HttpHelper().doGetRequest(
-      UriHelper.getFolksonomyUri(
+      uriHelper.getUri(
         path: '/',
-        queryType: queryType,
       ),
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     _checkResponse(response);
   }
@@ -36,7 +35,7 @@ class FolksonomyAPIClient {
   static Future<List<ProductStats>> getProductStats({
     final String? key,
     final String? value,
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperFolksonomyProd,
   }) async {
     final Map<String, String> parameters = <String, String>{};
     /* TODO
@@ -55,12 +54,11 @@ class FolksonomyAPIClient {
       parameters['v'] = value;
     }
     final Response response = await HttpHelper().doGetRequest(
-      UriHelper.getFolksonomyUri(
+      uriHelper.getUri(
         path: 'products/stats',
         queryParameters: parameters,
-        queryType: queryType,
       ),
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     _checkResponse(response);
     final List<ProductStats> result = <ProductStats>[];
@@ -82,7 +80,7 @@ class FolksonomyAPIClient {
   static Future<Map<String, String>> getProducts({
     required final String key,
     final String? value,
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperFolksonomyProd,
   }) async {
     final Map<String, String> parameters = <String, String>{};
     /* TODO
@@ -95,12 +93,11 @@ class FolksonomyAPIClient {
       parameters['v'] = value;
     }
     final Response response = await HttpHelper().doGetRequest(
-      UriHelper.getFolksonomyUri(
+      uriHelper.getUri(
         path: 'products',
         queryParameters: parameters,
-        queryType: queryType,
       ),
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     _checkResponse(response);
     final Map<String, String> result = <String, String>{};
@@ -121,7 +118,7 @@ class FolksonomyAPIClient {
   /// The key of the returned map is the tag key.
   static Future<Map<String, ProductTag>> getProductTags({
     required final String barcode,
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperFolksonomyProd,
   }) async {
     final Map<String, String> parameters = <String, String>{};
     /* TODO
@@ -130,12 +127,11 @@ class FolksonomyAPIClient {
     }
      */
     final Response response = await HttpHelper().doGetRequest(
-      UriHelper.getFolksonomyUri(
+      uriHelper.getUri(
         path: 'product/$barcode',
         queryParameters: parameters,
-        queryType: queryType,
       ),
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     _checkResponse(response);
     final Map<String, ProductTag> result = <String, ProductTag>{};
@@ -158,7 +154,7 @@ class FolksonomyAPIClient {
   static Future<ProductTag?> getProductTag({
     required final String barcode,
     required final String key,
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperFolksonomyProd,
   }) async {
     final Map<String, String> parameters = <String, String>{};
     /* TODO
@@ -167,14 +163,17 @@ class FolksonomyAPIClient {
     }
      */
     final Response response = await HttpHelper().doGetRequest(
-      UriHelper.getFolksonomyUri(
+      uriHelper.getUri(
         path: 'product/$barcode/$key',
         queryParameters: parameters,
-        queryType: queryType,
       ),
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
-    _checkResponse(response);
+    // may return 404 (and "null") when not found.
+    _checkResponse(
+      response,
+      authorizedStatus: <int>[200, 404],
+    );
     if (response.body == 'null') {
       // not found
       return null;
@@ -190,7 +189,7 @@ class FolksonomyAPIClient {
   static Future<Map<String, ProductTag>> getProductTagWithSubKeys({
     required final String barcode,
     required final String key,
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperFolksonomyProd,
   }) async {
     final Map<String, String> parameters = <String, String>{};
     /* TODO
@@ -199,12 +198,11 @@ class FolksonomyAPIClient {
     }
      */
     final Response response = await HttpHelper().doGetRequest(
-      UriHelper.getFolksonomyUri(
+      uriHelper.getUri(
         path: 'product/$barcode/$key*', // look at the star!
         queryParameters: parameters,
-        queryType: queryType,
       ),
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     _checkResponse(response);
     final Map<String, ProductTag> result = <String, ProductTag>{};
@@ -250,7 +248,7 @@ Future<void> deleteProductTag({
   static Future<List<ProductTag>> getProductTagVersions({
     required final String barcode,
     required final String key,
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperFolksonomyProd,
   }) async {
     final Map<String, String> parameters = <String, String>{};
     /* TODO
@@ -259,12 +257,11 @@ Future<void> deleteProductTag({
     }
      */
     final Response response = await HttpHelper().doGetRequest(
-      UriHelper.getFolksonomyUri(
+      uriHelper.getUri(
         path: 'product/$barcode/$key/versions',
         queryParameters: parameters,
-        queryType: queryType,
       ),
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     _checkResponse(response);
     final List<ProductTag> result = <ProductTag>[];
@@ -335,7 +332,7 @@ Future<void> deleteProductTag({
 
   /// Returns the list of tag keys with statistics.
   static Future<Map<String, KeyStats>> getKeys({
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperFolksonomyProd,
   }) async {
     final Map<String, String> parameters = <String, String>{};
     /* TODO "The keys list can be restricted to private tags from some owner"
@@ -344,12 +341,11 @@ Future<void> deleteProductTag({
     }
      */
     final Response response = await HttpHelper().doGetRequest(
-      UriHelper.getFolksonomyUri(
+      uriHelper.getUri(
         path: 'keys',
         queryParameters: parameters,
-        queryType: queryType,
       ),
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     _checkResponse(response);
     final Map<String, KeyStats> result = <String, KeyStats>{};
@@ -363,21 +359,23 @@ Future<void> deleteProductTag({
   }
 
   static Future<void> ping({
-    final QueryType? queryType,
+    final UriHelper uriHelper = uriHelperFolksonomyProd,
   }) async {
     final Response response = await HttpHelper().doGetRequest(
-      UriHelper.getFolksonomyUri(
+      uriHelper.getUri(
         path: 'ping',
-        queryType: queryType,
       ),
-      queryType: queryType,
+      uriHelper: uriHelper,
     );
     _checkResponse(response);
   }
 
   /// Throws a detailed exception if relevant. Does nothing if [response] is OK.
-  static void _checkResponse(final Response response) {
-    if (response.statusCode != 200) {
+  static void _checkResponse(
+    final Response response, {
+    final List<int> authorizedStatus = const <int>[200],
+  }) {
+    if (!authorizedStatus.contains(response.statusCode)) {
       // TODO have a look at ValidationError in https://api.folksonomy.openfoodfacts.org/docs
       throw Exception('Wrong status code: ${response.statusCode}');
     }

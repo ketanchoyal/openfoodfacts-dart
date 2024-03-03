@@ -10,27 +10,17 @@ class SignUpStatus extends Status {
   final Iterable<SignUpStatusError>? statusErrors;
 
   SignUpStatus._({
-    dynamic status,
-    String? statusVerbose,
-    String? body,
-    String? error,
-    int? imageId,
+    super.status,
+    super.error,
     this.statusErrors,
-  }) : super(
-          status: status,
-          statusVerbose: statusVerbose,
-          body: body,
-          error: error,
-          imageId: imageId,
-        );
+  });
 
   factory SignUpStatus(Status status) {
     if (status.body == null) {
       return SignUpStatus._(
-        status: 500,
+        status: Status.serverErrorStatus,
         statusErrors: {SignUpStatusError.UNKNOWN},
-        error:
-            'No response, open an issue here: https://github.com/openfoodfacts/openfoodfacts-dart/issues/new',
+        error: Status.serverErrorInEnglish,
       );
     } else if (status.body!.contains('loggedin')) {
       return SignUpStatus._(
@@ -101,6 +91,7 @@ class SignUpStatus extends Status {
         SignUpStatusError.INVALID_PASSWORD,
     'The user name must contain only unaccented letters, digits and dashes.':
         SignUpStatusError.INVALID_USERNAME,
+    '504 Gateway Time-out': SignUpStatusError.SERVER_BUSY,
   };
 }
 
@@ -121,6 +112,9 @@ enum SignUpStatusError {
 
   /// The password is incorrect (too short)
   INVALID_PASSWORD,
+
+  /// When the server is down (504 Gateway timeout)
+  SERVER_BUSY,
 
   /// Generic error
   UNKNOWN,

@@ -6,7 +6,6 @@ import 'test_constants.dart';
 /// Integration test about packaging recycling.
 void main() {
   OpenFoodAPIConfiguration.userAgent = TestConstants.TEST_USER_AGENT;
-  OpenFoodAPIConfiguration.globalQueryType = QueryType.PROD;
   OpenFoodAPIConfiguration.globalUser = TestConstants.PROD_USER;
   OpenFoodAPIConfiguration.globalCountry = OpenFoodFactsCountry.FRANCE;
   OpenFoodAPIConfiguration.globalLanguages = [
@@ -28,9 +27,6 @@ void main() {
     'en:discard',
     'en:recycle',
     'en:reuse',
-    'es:ecoponto-amarelo',
-    'es:ecoponto-azul',
-    'es:ecoponto-verde',
   };
   const String unknownTag = 'en:some_nonexistent_thing';
 

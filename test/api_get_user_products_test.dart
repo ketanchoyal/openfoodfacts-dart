@@ -6,11 +6,11 @@ import 'test_constants.dart';
 void main() {
   OpenFoodAPIConfiguration.userAgent = TestConstants.TEST_USER_AGENT;
   OpenFoodAPIConfiguration.globalUser = TestConstants.PROD_USER;
-  OpenFoodAPIConfiguration.globalQueryType = QueryType.PROD;
 
   group('$OpenFoodAPIClient get user products', () {
     const String userId = 'monsieurtanuki';
-    const int pageSize = 100; // should be big enough to get everything on page1
+    // should be big enough to get everything on page1
+    const int pageSize = 1000;
     final String toBeCompletedTag = ProductState.COMPLETED.toBeCompletedTag;
 
     Future<int> getCount(
@@ -44,7 +44,6 @@ void main() {
         result = await OpenFoodAPIClient.searchProducts(
           OpenFoodAPIConfiguration.globalUser,
           configuration,
-          queryType: OpenFoodAPIConfiguration.globalQueryType,
         );
       } catch (e) {
         fail('Could not retrieve data for $reason: $e');
@@ -52,13 +51,13 @@ void main() {
       expect(result.page, 1, reason: reason); // default
       expect(result.pageSize, pageSize, reason: reason);
       expect(result.products, isNotNull, reason: reason);
-      expect(result.products!.length, result.count, reason: reason);
+      expect(result.products!.length, result.pageCount, reason: reason);
       if (additionalCheck != null) {
         for (final Product product in result.products!) {
           additionalCheck(product);
         }
       }
-      return result.count!;
+      return result.pageCount!;
     }
 
     Future<int> getCountForAllLanguages(

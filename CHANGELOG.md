@@ -1,5 +1,214 @@
 # Changelog
 
+## [3.4.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v3.3.3...v3.4.0) (2024-02-06)
+
+
+### Features
+
+* 773 - new method "getProductNameBrandQuantity" ([#844](https://github.com/openfoodfacts/openfoodfacts-dart/issues/844)) ([2167bf9](https://github.com/openfoodfacts/openfoodfacts-dart/commit/2167bf9087c3583f5aaa35116705ff09647b5573))
+* 878 - added the "obsolete" product field ([#879](https://github.com/openfoodfacts/openfoodfacts-dart/issues/879)) ([4cc49cd](https://github.com/openfoodfacts/openfoodfacts-dart/commit/4cc49cd67cb6b7f98291f86888deee85def9a60e))
+* autocomplete manager for both TagTypes and TaxonomyNames ([#851](https://github.com/openfoodfacts/openfoodfacts-dart/issues/851)) ([6bb8deb](https://github.com/openfoodfacts/openfoodfacts-dart/commit/6bb8deb543adc45031e2de749060267174c48b7a))
+
+
+### Bug Fixes
+
+* unit tests about autocomplete ([#868](https://github.com/openfoodfacts/openfoodfacts-dart/issues/868)) ([7a1f4e6](https://github.com/openfoodfacts/openfoodfacts-dart/commit/7a1f4e639573e182e2a1dff5098e5741d7fc057c))
+
+## [3.3.3](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v3.3.2...v3.3.3) (2024-01-31)
+
+
+### Bug Fixes
+
+* nutriment persize serving ([#873](https://github.com/openfoodfacts/openfoodfacts-dart/issues/873)) ([31f9fab](https://github.com/openfoodfacts/openfoodfacts-dart/commit/31f9fab611e58e130739a81a28b7536aff863679))
+* added `added-sugars` nutrient ([#862](https://github.com/openfoodfacts/openfoodfacts-dart/issues/862))
+
+## [3.3.2](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v3.3.1...v3.3.2) (2024-01-12)
+
+
+### Bug Fixes
+
+* unit test value + better json decode ([#865](https://github.com/openfoodfacts/openfoodfacts-dart/issues/865)) ([565c0fa](https://github.com/openfoodfacts/openfoodfacts-dart/commit/565c0fa3b2b859dcef282eb19336a8897c591c63))
+
+## [3.3.1](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v3.3.0...v3.3.1) (2024-01-07)
+
+
+### Bug Fixes
+
+* 862 - added 18 nutrients ([#863](https://github.com/openfoodfacts/openfoodfacts-dart/issues/863)) ([dff0535](https://github.com/openfoodfacts/openfoodfacts-dart/commit/dff0535810baa74a97be278dfd19ff8d732d3145))
+
+## [3.3.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v3.2.1...v3.3.0) (2023-12-24)
+
+
+### Features
+
+* 831 - Open Prices API - "get prices" ([#845](https://github.com/openfoodfacts/openfoodfacts-dart/issues/845)) ([eaeb1aa](https://github.com/openfoodfacts/openfoodfacts-dart/commit/eaeb1aa3abd427e524c1f85b560b97921fdfab05))
+* simplified access to raw product images ([#839](https://github.com/openfoodfacts/openfoodfacts-dart/issues/839)) ([3350251](https://github.com/openfoodfacts/openfoodfacts-dart/commit/3350251481d17fccbd6b60ba8a8c95f021da6f10))
+
+
+### Bug Fixes
+
+* If `product.images` is `null`, `getProductImageIds`shouldn't crash ([#857](https://github.com/openfoodfacts/openfoodfacts-dart/issues/857)) ([02abab3](https://github.com/openfoodfacts/openfoodfacts-dart/commit/02abab364146cd8493f941ac861db907cf301359))
+* unit test with updated expected values ([#858](https://github.com/openfoodfacts/openfoodfacts-dart/issues/858)) ([0482f63](https://github.com/openfoodfacts/openfoodfacts-dart/commit/0482f6342ea96f44cd988b44e82c20a3aeffbcff))
+
+## [3.2.1](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v3.2.0...v3.2.1) (2023-12-03)
+
+
+### Bug Fixes
+
+* 5 topics ([#846](https://github.com/openfoodfacts/openfoodfacts-dart/issues/846)) ([44812d4](https://github.com/openfoodfacts/openfoodfacts-dart/commit/44812d485cca0bc989e8e7dd8bf1c432a1e91c3e))
+
+## [3.2.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v3.1.0...v3.2.0) (2023-11-28)
+
+
+### Features
+
+* 620 - autocomplete for all taxonomy names and fuzziness levels ([#835](https://github.com/openfoodfacts/openfoodfacts-dart/issues/835)) ([046c418](https://github.com/openfoodfacts/openfoodfacts-dart/commit/046c4189a116fdd20b2e2100def665f07094a786))
+* 620 - Elastic Search autocomplete for categories ([#834](https://github.com/openfoodfacts/openfoodfacts-dart/issues/834)) ([1672f1a](https://github.com/openfoodfacts/openfoodfacts-dart/commit/1672f1a01fc8055866ee30b1594940fda589d10b))
+* 836 - localizable and clickable server error ([#837](https://github.com/openfoodfacts/openfoodfacts-dart/issues/837)) ([a40101c](https://github.com/openfoodfacts/openfoodfacts-dart/commit/a40101c2b0c0b8aefe2f761bf4718be31022c84b))
+* new field pageCount for searchResult ([#823](https://github.com/openfoodfacts/openfoodfacts-dart/issues/823)) ([1d88bbf](https://github.com/openfoodfacts/openfoodfacts-dart/commit/1d88bbfac3411bfe150745034a4e28067628ac0f))
+* new localized product fields for generic name ([#828](https://github.com/openfoodfacts/openfoodfacts-dart/issues/828)) ([a98cfcb](https://github.com/openfoodfacts/openfoodfacts-dart/commit/a98cfcb3d1e127b5a57d6a7e70db163906ac2661))
+
+
+### Bug Fixes
+
+* 829 - no more crash if the user name is not ASCII/ISO-8859-1 ([#830](https://github.com/openfoodfacts/openfoodfacts-dart/issues/830)) ([8a23aee](https://github.com/openfoodfacts/openfoodfacts-dart/commit/8a23aeef41307fd85d5f119da0fd60470b6d39db))
+
+## [3.1.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v3.0.0...v3.1.0) (2023-10-28)
+
+
+### Features
+
+* 810 - 6 new localized product fields ([#811](https://github.com/openfoodfacts/openfoodfacts-dart/issues/811)) ([df85a38](https://github.com/openfoodfacts/openfoodfacts-dart/commit/df85a38fac6bf9a7fac047d227a05af09d91ebff))
+
+
+### Bug Fixes
+
+* 816 - use localized versions of productName and ingredientsText ([#817](https://github.com/openfoodfacts/openfoodfacts-dart/issues/817)) ([60f7d1e](https://github.com/openfoodfacts/openfoodfacts-dart/commit/60f7d1eb9679e226ec1f56e53ba6d4966bfa93f4))
+
+## [3.0.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.10.1...v3.0.0) (2023-09-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* 801 - more url flexibility with non static UriHelper ([#803](https://github.com/openfoodfacts/openfoodfacts-dart/issues/803))
+* fix for the uk/gb country code case ([#795](https://github.com/openfoodfacts/openfoodfacts-dart/issues/795))
+* A valid user agent is now required ([#790](https://github.com/openfoodfacts/openfoodfacts-dart/issues/790))
+* removed deprecated code ([#791](https://github.com/openfoodfacts/openfoodfacts-dart/issues/791))
+* 742 - robotoff - countries instead of country ([#792](https://github.com/openfoodfacts/openfoodfacts-dart/issues/792))
+
+### Features
+
+* 69 - method to get a server type from its off tag ([#796](https://github.com/openfoodfacts/openfoodfacts-dart/issues/796)) ([0bd8f90](https://github.com/openfoodfacts/openfoodfacts-dart/commit/0bd8f90484ce1aa6d054162ffc9ddbacf1cc0029))
+* 801 - more url flexibility with non static UriHelper ([#803](https://github.com/openfoodfacts/openfoodfacts-dart/issues/803)) ([7753cb0](https://github.com/openfoodfacts/openfoodfacts-dart/commit/7753cb063e04b923a7d7f5fa0d54a9a2b3f7575f))
+* 802 - new "get product" method specific to OBF OPF OPFF ([#806](https://github.com/openfoodfacts/openfoodfacts-dart/issues/806)) ([e824de2](https://github.com/openfoodfacts/openfoodfacts-dart/commit/e824de2d334ab99e3d214759314970ffcb9c0644))
+* A valid user agent is now required ([#790](https://github.com/openfoodfacts/openfoodfacts-dart/issues/790)) ([a26ec2a](https://github.com/openfoodfacts/openfoodfacts-dart/commit/a26ec2adaf5b7a1773b9c93ccf7b5e274b6100c5))
+* insight - method to get an insight annotation from an int value ([#797](https://github.com/openfoodfacts/openfoodfacts-dart/issues/797)) ([fdc6381](https://github.com/openfoodfacts/openfoodfacts-dart/commit/fdc638151753ab64ed2d8dd497b7794c5563c4f5))
+* method to get the Uri host (e.g. for ping) ([#800](https://github.com/openfoodfacts/openfoodfacts-dart/issues/800)) ([081f0b9](https://github.com/openfoodfacts/openfoodfacts-dart/commit/081f0b9921ee0128cf7b91c8525fc1599f3d9a76))
+* product "getAttribute" method ([#799](https://github.com/openfoodfacts/openfoodfacts-dart/issues/799)) ([a179dc5](https://github.com/openfoodfacts/openfoodfacts-dart/commit/a179dc516ad1dcc75eda4f70eb4d86a535cdbcfa))
+* specified minimum size for uploaded images (for pre-checks) ([#798](https://github.com/openfoodfacts/openfoodfacts-dart/issues/798)) ([3cf14f2](https://github.com/openfoodfacts/openfoodfacts-dart/commit/3cf14f2c624a97c3c67b4d7c379d93f0915042bd))
+
+
+### Bug Fixes
+
+* 742 - robotoff - countries instead of country ([#792](https://github.com/openfoodfacts/openfoodfacts-dart/issues/792)) ([8582519](https://github.com/openfoodfacts/openfoodfacts-dart/commit/8582519b3dcc8e7341ab46ebb4d5c1adf95cef6b))
+* fix for the uk/gb country code case ([#795](https://github.com/openfoodfacts/openfoodfacts-dart/issues/795)) ([fc2e907](https://github.com/openfoodfacts/openfoodfacts-dart/commit/fc2e907a6217bad13522438a5eb30b2d74413c07))
+* removed deprecated code ([#791](https://github.com/openfoodfacts/openfoodfacts-dart/issues/791)) ([8d01168](https://github.com/openfoodfacts/openfoodfacts-dart/commit/8d011687036e0b3ae622c0a354cefbc6c39a27f3))
+
+## [2.10.1](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.10.0...v2.10.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* reset password checks with languages ([#787](https://github.com/openfoodfacts/openfoodfacts-dart/issues/787)) ([0fee449](https://github.com/openfoodfacts/openfoodfacts-dart/commit/0fee44994f1e236748ccec989f87053b5011e972))
+
+## [2.10.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.9.0...v2.10.0) (2023-08-12)
+
+
+### Features
+
+* Reset password: allow to receive "translated" email ([#781](https://github.com/openfoodfacts/openfoodfacts-dart/issues/781)) ([a82a699](https://github.com/openfoodfacts/openfoodfacts-dart/commit/a82a699110f79a0fc0ab70d9d1267d5cdd6332dc))
+
+
+### Bug Fixes
+
+* unit test values ([#783](https://github.com/openfoodfacts/openfoodfacts-dart/issues/783)) ([61c1ec1](https://github.com/openfoodfacts/openfoodfacts-dart/commit/61c1ec17903775e6873d917a85e3da0bdeff71e6))
+
+## [2.9.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.8.0...v2.9.0) (2023-08-09)
+
+
+### Features
+
+* Multipart requests: ensure to always get the full response ([#779](https://github.com/openfoodfacts/openfoodfacts-dart/issues/779)) ([e53c7fd](https://github.com/openfoodfacts/openfoodfacts-dart/commit/e53c7fd91d67712f065be54974d09b8ded8b912c))
+
+## [2.8.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.7.4...v2.8.0) (2023-08-08)
+
+
+### Features
+
+* Registration/Password lost: better catch 504 errors from the server ([#777](https://github.com/openfoodfacts/openfoodfacts-dart/issues/777)) ([8cd4a35](https://github.com/openfoodfacts/openfoodfacts-dart/commit/8cd4a35c6f97678a0647f2c3b262df4ef11ca77c))
+
+
+### Bug Fixes
+
+* password reset not working ([#774](https://github.com/openfoodfacts/openfoodfacts-dart/issues/774)) ([8792510](https://github.com/openfoodfacts/openfoodfacts-dart/commit/8792510b1898302c49955131fd34164887ca2296))
+
+## [2.7.4](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.7.3...v2.7.4) (2023-08-03)
+
+
+### Bug Fixes
+
+* 764 - upgraded sdk and http dependency ([#770](https://github.com/openfoodfacts/openfoodfacts-dart/issues/770)) ([adcd147](https://github.com/openfoodfacts/openfoodfacts-dart/commit/adcd147b22181847b5f4fcab38b4b1dc56250af5))
+
+## [2.7.3](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.7.2...v2.7.3) (2023-07-20)
+
+
+### Bug Fixes
+
+* issue with converting LocalizedTags to JSON ([#766](https://github.com/openfoodfacts/openfoodfacts-dart/issues/766)) ([80c3ddb](https://github.com/openfoodfacts/openfoodfacts-dart/commit/80c3ddb3b5fa68643b36b685a80ce01f13130f5b))
+
+## [2.7.2](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.7.1...v2.7.2) (2023-07-19)
+
+
+### Bug Fixes
+
+* issue with JSON conversion of packagings data ([#762](https://github.com/openfoodfacts/openfoodfacts-dart/issues/762)) ([01c1d7b](https://github.com/openfoodfacts/openfoodfacts-dart/commit/01c1d7b29da50dbaf17a0a375a54c34e7eee30a4))
+
+## [2.7.1](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.7.0...v2.7.1) (2023-07-12)
+
+
+### Bug Fixes
+
+* fixed unit tests ([#755](https://github.com/openfoodfacts/openfoodfacts-dart/issues/755)) ([60bd0ee](https://github.com/openfoodfacts/openfoodfacts-dart/commit/60bd0ee49a0e5fa6279a2f0a0135d43e155f9711))
+
+## [2.7.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.6.0...v2.7.0) (2023-07-12)
+
+
+### Features
+
+* Allow to pass `insight_types` to `api/v1/questions/$barcode` ([#748](https://github.com/openfoodfacts/openfoodfacts-dart/issues/748)) ([cf9dd14](https://github.com/openfoodfacts/openfoodfacts-dart/commit/cf9dd14edf7a3a81f695ec6aa5b5d9ce919fd2c6))
+* Allow to pass a country and/or a language to the `register` user method ([#754](https://github.com/openfoodfacts/openfoodfacts-dart/issues/754)) ([05c5c12](https://github.com/openfoodfacts/openfoodfacts-dart/commit/05c5c126f9c1fe79599ffc44cc1abbeb48d47a94))
+
+
+### Bug Fixes
+
+* get user products tests ([#749](https://github.com/openfoodfacts/openfoodfacts-dart/issues/749)) ([38c4695](https://github.com/openfoodfacts/openfoodfacts-dart/commit/38c4695b3a6460cdcacc93e86507e41c826d5737))
+* ImageHelper refactoring ([#751](https://github.com/openfoodfacts/openfoodfacts-dart/issues/751)) ([ce3f319](https://github.com/openfoodfacts/openfoodfacts-dart/commit/ce3f319588ae896ae753e3c40b92983855582393))
+
+## [2.6.0](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.5.2...v2.6.0) (2023-06-14)
+
+
+### Features
+
+* 741 - new parameters for Robotoff ([#743](https://github.com/openfoodfacts/openfoodfacts-dart/issues/743)) ([77c01de](https://github.com/openfoodfacts/openfoodfacts-dart/commit/77c01de3efdceceee63e95d8a7bd8872bea36563))
+
+## [2.5.2](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.5.1...v2.5.2) (2023-06-03)
+
+
+### Bug Fixes
+
+* "InsightAnnotation" with better enum syntax ([#737](https://github.com/openfoodfacts/openfoodfacts-dart/issues/737)) ([30601b1](https://github.com/openfoodfacts/openfoodfacts-dart/commit/30601b19bd321c2d35ea1cf4745fc542aa96bc8c))
+* new "KP action" enum ([#730](https://github.com/openfoodfacts/openfoodfacts-dart/issues/730))
+
 ## [2.5.1](https://github.com/openfoodfacts/openfoodfacts-dart/compare/v2.5.0...v2.5.1) (2023-05-21)
 
 

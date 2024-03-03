@@ -1,10 +1,6 @@
 import 'package:http/http.dart';
 import 'abstract_query_configuration.dart';
-import 'country_helper.dart';
 import 'http_helper.dart';
-import 'language_helper.dart';
-import 'product_fields.dart';
-import 'query_type.dart';
 import 'uri_helper.dart';
 import '../model/user.dart';
 
@@ -13,14 +9,6 @@ class ProductQueryVersion {
   const ProductQueryVersion(this.version);
 
   final int version;
-
-  // TODO: deprecated from 2022-12-29; remove when old enough
-  @Deprecated('Use v3 instead')
-  static const ProductQueryVersion v0 = ProductQueryVersion(0);
-
-  // TODO: deprecated from 2022-12-29; remove when old enough
-  @Deprecated('Use v3 instead')
-  static const ProductQueryVersion v2 = ProductQueryVersion(2);
 
   static const ProductQueryVersion v3 = ProductQueryVersion(3);
 
@@ -47,16 +35,11 @@ class ProductQueryConfiguration extends AbstractQueryConfiguration {
   ProductQueryConfiguration(
     this.barcode, {
     required this.version,
-    final OpenFoodFactsLanguage? language,
-    final List<OpenFoodFactsLanguage> languages = const [],
-    final OpenFoodFactsCountry? country,
-    final List<ProductField>? fields,
-  }) : super(
-          language: language,
-          languages: languages,
-          country: country,
-          fields: fields,
-        );
+    super.language,
+    super.languages,
+    super.country,
+    super.fields,
+  });
 
   /// If the provided [ProductQueryVersion] matches the API V3 requirements
   bool matchesV3() => version.matchesV3();
@@ -67,27 +50,25 @@ class ProductQueryConfiguration extends AbstractQueryConfiguration {
   @override
   Future<Response> getResponse(
     final User? user,
-    final QueryType? queryType,
+    final UriProductHelper uriHelper,
   ) async {
     if (version == ProductQueryVersion.v3) {
       return await HttpHelper().doGetRequest(
-        UriHelper.getUri(
+        uriHelper.getUri(
           path: getUriPath(),
-          queryType: queryType,
           queryParameters: getParametersMap(),
         ),
         user: user,
-        queryType: queryType,
+        uriHelper: uriHelper,
       );
     }
     return await HttpHelper().doPostRequest(
-      UriHelper.getPostUri(
+      uriHelper.getPostUri(
         path: getUriPath(),
-        queryType: queryType,
       ),
       getParametersMap(),
       user,
-      queryType: queryType,
+      uriHelper: uriHelper,
       addCredentialsToBody: false,
     );
   }

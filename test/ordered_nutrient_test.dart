@@ -6,7 +6,6 @@ import 'test_constants.dart';
 /// Tests related to [OrderedNutrient] and [OrderedNutrients]
 void main() {
   OpenFoodAPIConfiguration.userAgent = TestConstants.TEST_USER_AGENT;
-  OpenFoodAPIConfiguration.globalQueryType = QueryType.PROD;
 
   // Very long list, experimentally created from the 3 initial URLs.
   // Don't hesitate to edit this list if you have clear functional ideas
@@ -164,7 +163,7 @@ void main() {
       for (final OpenFoodFactsCountry country in countries) {
         checkNutrients(
           await OpenFoodAPIClient.getOrderedNutrients(
-            cc: country.offTag,
+            country: country,
             language: language,
           ),
           country,
@@ -191,12 +190,16 @@ void main() {
         OpenFoodFactsLanguage.ENGLISH: 'Energy',
         OpenFoodFactsLanguage.PORTUGUESE: 'Energia',
       };
-      const Set<String> countries = {'us', 'it', 'br'};
+      const Set<OpenFoodFactsCountry> countries = {
+        OpenFoodFactsCountry.USA,
+        OpenFoodFactsCountry.ITALY,
+        OpenFoodFactsCountry.BRAZIL,
+      };
       for (final OpenFoodFactsLanguage language in energies.keys) {
-        for (final String country in countries) {
+        for (final OpenFoodFactsCountry country in countries) {
           final OrderedNutrients orderedNutrients =
               await OpenFoodAPIClient.getOrderedNutrients(
-            cc: country,
+            country: country,
             language: language,
           );
           final OrderedNutrient? found =

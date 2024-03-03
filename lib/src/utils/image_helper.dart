@@ -1,99 +1,68 @@
 import 'open_food_api_configuration.dart';
-import 'query_type.dart';
-import 'language_helper.dart';
+import 'uri_helper.dart';
 import '../model/product_image.dart';
 
 /// Helper class related to product pictures
 class ImageHelper {
+  /// Minimum accepted width for an uploaded image.
+  static const int minimumWidth = 640;
+
+  /// Minimum accepted height for an uploaded image.
+  static const int minimumHeight = 160;
+
   /// Returns the [image] full url - for a specific [imageSize] if needed.
   ///
-  /// Returns null is [barcode] is null.
-  /// E.g. "https://static.openfoodfacts.org/images/products/359/671/046/2858/front_fr.4.100.jpg"
-  static String? buildUrl(
-    final String? barcode,
+  /// E.g. "https://images.openfoodfacts.org/images/products/359/671/046/2858/front_fr.4.100.jpg"
+  // TODO: deprecated from 2023-11-25; remove when old enough
+  @Deprecated('Use ProductImage.getUrl instead')
+  static String getLocalizedProductImageUrl(
+    final String barcode,
     final ProductImage image, {
     final ImageSize? imageSize,
-    final QueryType? queryType,
+    final UriProductHelper uriHelper = uriHelperFoodProd,
   }) =>
-      barcode == null
-          ? null
-          : '${getProductImageRootUrl(barcode, queryType: queryType)}'
-              '/'
-              '${getProductImageFilename(image, imageSize: imageSize)}';
+      image.getUrl(barcode, uriHelper: uriHelper, imageSize: imageSize);
 
-  /// Returns the [image] full url for an uploaded image.
+  /// Returns the [image] full url for an uploaded ("raw") image.
   ///
-  /// E.g. "https://static.openfoodfacts.org/images/products/359/671/046/2858/1.400.jpg"
+  /// E.g. "https://images.openfoodfacts.org/images/products/359/671/046/2858/1.400.jpg"
+  // TODO: deprecated from 2023-11-25; remove when old enough
+  @Deprecated('Use ProductImage.getUrl instead')
   static String getUploadedImageUrl(
     final String barcode,
     final int imageId,
     final ImageSize imageSize, {
-    final QueryType? queryType,
+    final UriProductHelper uriHelper = uriHelperFoodProd,
   }) =>
-      '${getProductImageRootUrl(barcode, queryType: queryType)}'
-      '/'
-      '${_getUploadedImageFilename(imageId, imageSize)}';
+      ProductImage.raw(imgid: imageId.toString(), size: imageSize).getUrl(
+        barcode,
+        uriHelper: uriHelper,
+      );
 
   /// Returns the [image] filename - for a specific [imageSize] if needed.
   ///
   /// By default uses the own [image]'s size field.
   /// E.g. "front_fr.4.100.jpg"
+  /// cf. https://github.com/openfoodfacts/smooth-app/issues/3065
+  // TODO: deprecated from 2023-11-25; remove when old enough
+  @Deprecated('Use ProductImage.getUrlFilename instead')
   static String getProductImageFilename(
     final ProductImage image, {
     final ImageSize? imageSize,
   }) =>
-      '${image.field.offTag}_${image.language.code}'
-      '.${image.rev}'
-      '.${((imageSize ?? image.size) ?? ImageSize.UNKNOWN).number}'
-      '.jpg';
+      image.getUrlFilename(imageSize: imageSize);
 
   /// Returns the filename of an uploaded image.
-  static String _getUploadedImageFilename(
+  ///
+  /// cf. https://github.com/openfoodfacts/smooth-app/issues/3065
+  // TODO: deprecated from 2023-11-25; remove when old enough
+  @Deprecated('Use ProductImage.getUrlFilename instead')
+  static String getUploadedImageFilename(
     final int imageId,
     final ImageSize imageSize,
-  ) {
-    switch (imageSize) {
-      case ImageSize.THUMB:
-      case ImageSize.DISPLAY:
-        // adapted size
-        return '$imageId.${imageSize.number}.jpg';
-      case ImageSize.SMALL:
-        // not available, we take the best other choice instead
-        return '$imageId.${ImageSize.DISPLAY.number}.jpg';
-      case ImageSize.ORIGINAL:
-      case ImageSize.UNKNOWN:
-        // full size
-        return '$imageId.jpg';
-    }
-  }
-
-  /// Returns the web folder of the product images (without trailing '/')
-  ///
-  /// E.g. "https://static.openfoodfacts.org/images/products/359/671/046/2858"
-  static String getProductImageRootUrl(
-    final String barcode, {
-    final QueryType? queryType,
-  }) {
-    final String barcodePath;
-    if (barcode.length >= 9) {
-      var p1 = barcode.substring(0, 3);
-      var p2 = barcode.substring(3, 6);
-      var p3 = barcode.substring(6, 9);
-      if (barcode.length == 9) {
-        barcodePath = '$p1/$p2/$p3';
-      } else {
-        var p4 = barcode.substring(9);
-        barcodePath = '$p1/$p2/$p3/$p4';
-      }
-    } else {
-      barcodePath = barcode;
-    }
-
-    final String root =
-        OpenFoodAPIConfiguration.getQueryType(queryType) == QueryType.PROD
-            ? OpenFoodAPIConfiguration.imageProdUrlBase
-            : OpenFoodAPIConfiguration.imageTestUrlBase;
-    final String separator = root.endsWith('/') ? '' : '/';
-    return '$root$separator$barcodePath';
-  }
+  ) =>
+      ProductImage.raw(
+        imgid: imageId.toString(),
+        size: imageSize,
+      ).getUrlFilename();
 }
